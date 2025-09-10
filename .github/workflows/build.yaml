@@ -43,6 +43,18 @@ jobs:
 
 
   publish:
+    strategy:
+      matrix:
+        include:
+          - version: 1.12.2
+            project: forge122
+            folder: 1.12.2
+          - version: 1.16.5
+            project: modern
+            folder: 1.16.5-forge
+          - version: 1.20.1
+            project: modern
+            folder: 1.20.1-forge
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -98,10 +110,10 @@ jobs:
 
       - name: Build Jars
         working-directory: ./celeritas
-        run: ./gradlew -Ptarget_versions=1.12.2 packageJar
+        run: ./gradlew -Ptarget_versions=${{ matrix.version }} packageJar
 
       - name: Remove dev jars
-        working-directory: ./celeritas/forge122/versions/1.12.2/build/libs
+        working-directory: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
         run: |
           rm *-dev-dev.jar
           rm *-dev-remapped-thin.jar
@@ -118,7 +130,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: 'celeritas/forge122/versions/1.12.2/build/libs/*.jar'
+          artifacts: 'celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs/*.jar'
           generateReleaseNotes: false
           bodyFile: "celeritas/body.txt"
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
