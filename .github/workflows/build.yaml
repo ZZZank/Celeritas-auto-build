@@ -128,9 +128,14 @@ jobs:
           push: true
           tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
 
-      - uses: ncipollo/release-action@v1.14.0
+      - uses: actions/upload-artifact@v4
         with:
-          artifacts: 'celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs/*.jar'
-          generateReleaseNotes: false
-          bodyFile: "celeritas/body.txt"
-          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
+          name: Artifacts-${{ matrix.version }}
+          path: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
+
+      # - uses: ncipollo/release-action@v1.14.0
+      #   with:
+      #     artifacts: 'celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs/*.jar'
+      #     generateReleaseNotes: false
+      #     bodyFile: "celeritas/body.txt"
+      #     tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
