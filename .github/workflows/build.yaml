@@ -122,11 +122,11 @@ jobs:
         working-directory: ./celeritas
         run: ./gradlew -Ptarget_versions=${{ matrix.version }} packageJar
 
-      - name: Remove dev jars
-        working-directory: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
-        run: |
-          rm *-dev-dev.jar
-          rm *-dev-remapped-thin.jar
+      # - name: Remove dev jars
+      #   working-directory: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
+      #   run: |
+      #     rm *-dev-dev.jar
+      #     rm *-dev-remapped-thin.jar
 
       - uses: actions/upload-artifact@v4
         with:
