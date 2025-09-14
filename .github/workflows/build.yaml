@@ -54,7 +54,6 @@ jobs:
         with:
           add: 'latest_commit'
           push: true
-          tag: ${{ env.LATEST_DESCRIBE }}-${{ env.CURRENT_DATE }}
 
   publish:
     strategy:
