@@ -44,30 +44,12 @@ jobs:
             echo "should_run=true" >> $GITHUB_OUTPUT
           fi
 
-  update_commit_hash:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    needs: [check, publish]
-    if: needs.check.outputs.should_run == 'true'
-    steps:
-      - name: Checkout this repository
-        uses: actions/checkout@v4.2.2
-        with:
-          fetch-tags: true
-          fetch-depth: 0
-
-      - name: Get latest hash
-        working-directory: ./celeritas
-        run: echo "COMMIT_HASH=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
-      - name: Get previous hash
-        run: echo "PREVIOUS_HASH=$(cat ./latest_commit)" >> $GITHUB_ENV
-
-      - name: Update hash storage
+      - name: Update hash
+        if: env.COMMIT_HASH != env.PREVIOUS_HASH
         run: echo $COMMIT_HASH > ./latest_commit
 
       - name: Commit hash update
+        if: env.COMMIT_HASH != env.PREVIOUS_HASH
         uses: EndBug/add-and-commit@v9.1.4
         with:
           add: 'latest_commit'
