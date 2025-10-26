@@ -62,6 +62,7 @@ jobs:
 
   publish:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - version: 1.12.2
