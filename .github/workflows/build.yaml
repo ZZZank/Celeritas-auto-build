@@ -66,14 +66,8 @@ jobs:
       matrix:
         include:
           - version: 1.12.2
-            project: forge122
-            folder: 1.12.2
           - version: 1.16.5
-            project: modern
-            folder: 1.16.5-forge
           - version: 1.20.1
-            project: modern
-            folder: 1.20.1-forge
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -109,15 +103,9 @@ jobs:
         working-directory: ./celeritas
         run: ./gradlew -Ptarget_versions=${{ matrix.version }} packageJar
 
-      # - name: Remove dev jars
-      #   working-directory: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
-      #   run: |
-      #     rm *-dev-dev.jar
-      #     rm *-dev-remapped-thin.jar
-
       - uses: actions/upload-artifact@v4
         with:
           name: Artifacts-${{ matrix.version }}
-          path: ./celeritas/${{ matrix.project }}/versions/${{ matrix.folder }}/build/libs
+          path: ./celeritas/build/libs
 
       
